@@ -12,6 +12,12 @@ import androidx.fragment.app.Fragment;
 public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements View.OnClickListener {
     public P mPresenter;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        initView();
+    }
+
 
     @Nullable
     @Override
@@ -24,7 +30,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = getPresenterInstance();
-        initView();
         initListener();
     }
 

@@ -60,7 +60,6 @@ public class TableActivity extends BaseActivity {
 
     @Override
     public void destroy() {
-
     }
 
     @Override

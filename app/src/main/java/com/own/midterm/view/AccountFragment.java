@@ -35,10 +35,6 @@ public class AccountFragment extends BaseFragment<AccountPresenter> implements S
     @Override
     public void onStart() {
         super.onStart();
-        followers = (TextView) getActivity().findViewById(R.id.followers_text);
-        posts = getActivity().findViewById(R.id.posts_text);
-        followings = getActivity().findViewById(R.id.following_text);
-        name = getActivity().findViewById(R.id.nickname_text);
     }
 
     @Override
@@ -49,11 +45,14 @@ public class AccountFragment extends BaseFragment<AccountPresenter> implements S
     @Override
     public void initView() {
         makeStatusBarTransparent(getActivity());
+        followers = getActivity().findViewById(R.id.followers_text);
+        posts = getActivity().findViewById(R.id.posts_text);
+        followings = getActivity().findViewById(R.id.following_text);
+        name = getActivity().findViewById(R.id.nickname_text);
     }
 
     @Override
     public void initListener() {
-
     }
 
     @Override
@@ -74,7 +73,6 @@ public class AccountFragment extends BaseFragment<AccountPresenter> implements S
     @Override
     public void showAccount() {
         SharedPreferences sp = this.getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
-        Log.d("!!!!!!","?"+sp.getString("nickname",""));
         name.setText(sp.getString("nickname",""));
     }
 }
