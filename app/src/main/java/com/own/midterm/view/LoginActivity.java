@@ -12,7 +12,7 @@ import androidx.appcompat.app.ActionBar;
 
 import com.own.midterm.R;
 import com.own.midterm.base.BaseActivity;
-import com.own.midterm.base.BasePresenter;
+import com.own.midterm.base.BaseActivityPresenter;
 import com.own.midterm.contract.LoginContract;
 
 import static com.own.midterm.util.Other.makeStatusBarTransparent;
@@ -34,7 +34,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.V {
     }
 
     @Override
-    public BasePresenter getPresenterInstance() {
+    public BaseActivityPresenter getPresenterInstance() {
         return null;
     }
 
@@ -63,19 +63,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.V {
 
     @Override
     public void onClick(View v) {
-//        String url = "http://47.99.165.194/album/newest";
-//        Httputil.getInstance().execute(url, new Callback() {
-//            @Override
-//            public void onResponse(String response) {
-//                Log.d("!!!!!!","?"+response);
-//            }
-//
-//            @Override
-//            public void onFailed(Exception e) {
-//
-//            }
-//        });
-
         String name = userName.getText().toString();
         String pw = password.getText().toString();
         if(name.equals("abc")&&pw.equals("123")){

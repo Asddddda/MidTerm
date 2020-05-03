@@ -1,5 +1,6 @@
 package com.own.midterm.model;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.own.midterm.base.BaseModel;
@@ -26,7 +27,7 @@ public class AccountModel extends BaseModel<AccountPresenter> implements ShowCon
     }
 
     @Override
-    public void informP() {
-        mPresenter.informV();
+    public void informP(String info) {
+        mPresenter.informV(info);
     }
 }

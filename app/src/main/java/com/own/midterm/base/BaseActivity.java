@@ -7,7 +7,11 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements View.OnClickListener {
+/**
+ * 大概写的一个MVP，之前尝试MVP之间持有接口解耦时出了神奇bug，尝试用抽象类实现，后面才发现坑的。。。还得接口
+ * @param <P>
+ */
+public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppCompatActivity implements View.OnClickListener {
 
     public P mPresenter;
 

@@ -1,15 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="#fff"
-android:orientation="vertical">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:text="首页"
-    android:textColor="#000"/>
+    <ScrollView
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</RelativeLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/top_rela"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30sp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:text="Home"
+                    android:textColor="#1C252A"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="19dp"
+                    android:background="@drawable/search" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layer2"
+                app:layout_constraintTop_toBottomOf="@+id/top_rela"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="200sp"
+                    android:layout_height="40sp"
+                    android:layout_margin="20dp"
+                    android:text="New Albums"
+                    android:textColor="#ff1c252a"
+                    android:textSize="22sp"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/new_albums"
+                app:layout_constraintTop_toBottomOf="@+id/layer2"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"/>
+
+            <RelativeLayout
+                android:id="@+id/layer3"
+                app:layout_constraintTop_toBottomOf="@+id/new_albums"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="200sp"
+                    android:layout_height="40sp"
+                    android:layout_margin="20dp"
+                    android:text="Recommendations"
+                    android:textColor="#ff1c252a"
+                    android:textSize="22sp"/>
+
+                <TextView
+                    android:layout_width="80sp"
+                    android:layout_height="40sp"
+                    android:text="See All"
+                    android:textSize="22sp"
+                    android:textColor="#0091EA"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="20dp" />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/main_recy"
+                app:layout_constraintTop_toBottomOf="@+id/layer3"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+

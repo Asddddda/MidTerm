@@ -3,19 +3,20 @@ package com.own.midterm.view;
 import com.own.midterm.R;
 import com.own.midterm.base.BaseFragment;
 import com.own.midterm.contract.ShowContract;
-import com.own.midterm.presenter.AccountPresenter;
-import com.own.midterm.presenter.PlayPresenter;
+import com.own.midterm.presenter.LibraryPresenter;
 
-public class PlayFragment extends BaseFragment<PlayPresenter> implements ShowContract.V {
+import static com.own.midterm.util.Other.makeStatusBarTransparent;
+
+public class LibraryFragment extends BaseFragment<LibraryPresenter> implements ShowContract.V {
 
     @Override
-    public PlayPresenter getPresenterInstance() {
-        return new PlayPresenter();
+    public LibraryPresenter getPresenterInstance() {
+        return new LibraryPresenter();
     }
 
     @Override
     public void initView() {
-
+        makeStatusBarTransparent(getActivity());
     }
 
     @Override
@@ -25,7 +26,7 @@ public class PlayFragment extends BaseFragment<PlayPresenter> implements ShowCon
 
     @Override
     public int getContentViewID() {
-        return R.layout.play_layout;
+        return R.layout.library_layout;
     }
 
     @Override
@@ -39,7 +40,8 @@ public class PlayFragment extends BaseFragment<PlayPresenter> implements ShowCon
     }
 
     @Override
-    public void showAccount() {
+    public void show(String info) {
 
     }
+
 }

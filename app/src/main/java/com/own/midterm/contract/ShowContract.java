@@ -1,5 +1,6 @@
 package com.own.midterm.contract;
 
+import android.app.Activity;
 import android.content.Context;
 
 
@@ -8,21 +9,20 @@ public interface ShowContract {
     interface M {
         void getInfo(Context context);
 
-        void informP();
+        void informP(String info);
     }
 
-    interface V {
+    interface V{
         void askP();
 
-        void showAccount();
+        void show(String info);
     }
 
-    interface P<V> {
-
+    interface P{
         //通知M更新数据
-        void askM(Context context);
+        void askM(Activity activity);
 
         //让V更新view
-        void informV();
+        void informV(String info);
     }
 }

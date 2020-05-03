@@ -5,11 +5,20 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.util.JsonReader;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.own.midterm.contract.ShowContract;
+import com.own.midterm.model.Recommend;
+import com.own.midterm.model.Song;
+import com.own.midterm.model.UpdateRecommendEvent;
+import com.own.midterm.model.UpdateSongEvent;
+import com.own.midterm.util.BusUtil.BusUtil;
+import com.own.midterm.util.Glide.MyGlide;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,6 +28,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -32,16 +43,6 @@ public class JsonObject {
         this.context = context;
         this.model = model;
     }
-
-    @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler(){
-
-        public void handleMessage(Message msg){
-            if(msg.what == 0) {
-                Toast.makeText(context,"网络错误",Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
 
     public void request(final String requestUrl, String info) {
         final String Url = "http://47.99.165.194" + requestUrl + info;
@@ -66,11 +67,6 @@ public class JsonObject {
                     }
                     parseJSONData(requestUrl, response.toString());
                 } catch (Exception e) {
-//                    if (!method.equals("find")) {
-//                        Message message = Message.obtain();
-//                        message.what = UPDATE_TEXT;
-//                        handler.sendMessage(message);
-//                    }
                     e.printStackTrace();
                 } finally {
                     if (reader != null) {
@@ -93,38 +89,93 @@ public class JsonObject {
             case "/user/detail":
                 parseAccount(response);
                 break;
-//            case "forecast":
-//                parseForecast(jsonData);
-//                break;
-//            case "hourly":
-//                parseHourly(jsonData);
-//                break;
-//            case "lifestyle":
-//                parseLifestyle(jsonData);
-//                break;
-//            case "air":
-//                parseAir(jsonData);
-//                break;
-//            case "find":
-//                parseFind(jsonData);
-//                break;
+            case "/album/newest":
+                parseBanner(response);
+                break;
+            case "/top/playlist":
+                parseTop(response);
+            case "/playlist/detail":
+                parseDetail(response);
+                break;
             default:
                 break;
         }
     }
 
-    public void parseAccount(String response){
+    private void parseAccount(String response){
         try {
-            Log.d("!!!!!!",response);
             JSONObject rootObject = new JSONObject(response);
             JSONObject profileObject = rootObject.getJSONObject("profile");
             SharedPreferences.Editor editor = context.getSharedPreferences("account",MODE_PRIVATE).edit();
             editor.putString("nickname",profileObject.getString("nickname"));
-            Log.d("!!!!!!",profileObject.getString("nickname"));
-//            editor.putString("province",profileObject.getString())
+            editor.putString("city",profileObject.getString("city"));
+            editor.putString("follows",profileObject.getString("follows"));
+            editor.putString("followeds",profileObject.getString("followeds"));
+            editor.putString("eventCount",profileObject.getString("eventCount"));
             editor.apply();
-            model.informP();
+            model.informP(profileObject.getString("avatarUrl"));
         }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void parseBanner(String response){
+        Log.d("!!!!!!",response);
+        try {
+            JSONObject rootObject = new JSONObject(response);
+            JSONArray jsonArray = rootObject.getJSONArray("albums");
+            JSONObject jsonObject = jsonArray.getJSONObject(0);
+            model.informP(jsonObject.getString("picUrl"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void parseTop(String response){
+        try{
+            JSONObject rootObject = new JSONObject(response);
+            JSONArray jsonArray = rootObject.getJSONArray("playlists");
+            UpdateRecommendEvent event = new UpdateRecommendEvent();
+            List<Recommend>list = new ArrayList<>();
+            for(int i = 0;i<10;i++){
+                JSONObject object = jsonArray.getJSONObject(i);
+                Recommend recommend = new Recommend();
+                recommend.setId(object.getInt("id"));
+                recommend.setName(object.getString("name"));
+                recommend.setPicUrl(object.getString("coverImgUrl"));
+                recommend.setCreatorName(object.getJSONObject("creator").getString("nickname"));
+                list.add(recommend);
+            }
+            event.setRecommendList(list);
+            BusUtil.getDefault().post(event);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void parseDetail(String response){
+        try {
+            JSONObject root = new JSONObject(response);
+            JSONObject object = root.getJSONObject("playlist");
+            Log.d("!!!!!!","!"+root.toString());
+            JSONArray array = object.getJSONArray("tracks");
+            UpdateSongEvent event = new UpdateSongEvent();
+            List<Song> list = new ArrayList<>();
+            int count=0;
+            for(int i=0;i<array.length();i++){
+                if(array.getJSONObject(i).getInt("fee")==1)
+                    continue;
+                Song song = new Song();
+                count++;
+                song.setName(array.getJSONObject(i).getString("name"));
+                song.setId(array.getJSONObject(i).getInt("id"));
+                song.setLen(array.getJSONObject(i).getInt("dt"));
+                song.setCount(count);
+                list.add(song);
+            }
+            event.setSongList(list);
+            BusUtil.getDefault().post(event);
+        } catch (JSONException e){
             e.printStackTrace();
         }
     }

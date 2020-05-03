@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/list_back"
+        android:layout_width="9dp"
+        android:layout_height="15dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="19dp"
+        android:background="@drawable/arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/list_text"
+        android:layout_width="wrap_content"
+        android:layout_height="30sp"
+        android:layout_marginTop="30dp"
+        android:textColor="#1C252A"
+        android:text="PlayList"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/list_layer2"
+        app:layout_constraintTop_toBottomOf="@id/list_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/list_pic"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"/>
+        <TextView
+            android:id="@+id/list_name"
+            android:layout_width="wrap_content"
+            android:layout_height="30sp"
+            android:layout_alignLeft="@+id/list_pic"
+            android:text="Ride the Lightning"
+            android:textSize="16sp"
+            android:textColor="#1C252A"
+            android:layout_marginLeft="180dp"
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:id="@+id/list_writer"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="25sp"
+            android:textColor="#0091EA"
+            android:text="Metallica"/>
+
+        <ImageButton
+            android:id="@+id/list_play"
+            android:layout_width="18dp"
+            android:layout_height="17dp"
+            android:background="@drawable/playlist"
+            android:layout_below="@id/list_writer"
+            android:layout_alignStart="@id/list_writer"/>
+
+        <TextView
+            android:id="@+id/list_count"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="8 Tracks - 1984"
+            android:textColor="#758692"
+            android:layout_alignStart="@id/list_play"
+            android:layout_below="@id/list_writer"
+            android:layout_marginLeft="20dp"/>
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/list_writer"
+            android:background="@drawable/dots"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="50sp"
+        android:layout_height="30sp"
+        android:text="Songs"
+        android:textColor="#1C252A"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/list_layer2"
+        android:layout_margin="20dp"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/list_shaffle"
+        android:layout_width="28dp"
+        android:layout_height="23dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/shaffle"
+        app:layout_constraintTop_toBottomOf="@+id/list_layer2"
+        android:layout_margin="20dp"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_recy"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/list_shaffle"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

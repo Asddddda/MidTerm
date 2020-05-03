@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import com.own.midterm.R;
 import com.own.midterm.base.BaseFragment;
 import com.own.midterm.contract.ShowContract;
 import com.own.midterm.presenter.AccountPresenter;
+import com.own.midterm.util.Glide.MyGlide;
 
 import static com.own.midterm.util.Other.makeStatusBarTransparent;
 
@@ -25,6 +27,8 @@ public class AccountFragment extends BaseFragment<AccountPresenter> implements S
 
     private TextView name;
 
+    private TextView loc;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,7 @@ public class AccountFragment extends BaseFragment<AccountPresenter> implements S
     @Override
     public void onStart() {
         super.onStart();
+        askP();
     }
 
     @Override
@@ -48,6 +53,7 @@ public class AccountFragment extends BaseFragment<AccountPresenter> implements S
         followers = getActivity().findViewById(R.id.followers_text);
         posts = getActivity().findViewById(R.id.posts_text);
         followings = getActivity().findViewById(R.id.following_text);
+        loc = getActivity().findViewById(R.id.location_text);
         name = getActivity().findViewById(R.id.nickname_text);
     }
 
@@ -71,8 +77,21 @@ public class AccountFragment extends BaseFragment<AccountPresenter> implements S
     }
 
     @Override
-    public void showAccount() {
-        SharedPreferences sp = this.getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
+    public void show(final String info) {
+        final Context context = getActivity();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                MyGlide.with(context).load(info).setRatio(1f).setCompress(100).into((ImageView) getActivity().findViewById(R.id.account_im));
+            }
+        });
+        SharedPreferences sp = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
+        followings.setText(sp.getString("follows",""));
+        posts.setText(sp.getString("eventCount",""));
+        followers.setText(sp.getString("followeds",""));
+        loc.setText(sp.getString("city",""));
         name.setText(sp.getString("nickname",""));
+
     }
+
 }

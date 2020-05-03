@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.own.midterm.view.AccountFragment;
 import com.own.midterm.view.MainFragment;
-import com.own.midterm.view.PlayFragment;
+import com.own.midterm.view.LibraryFragment;
 
 public class FragmentAdapter extends FragmentPagerAdapter {
     public FragmentAdapter(@NonNull FragmentManager fm) {
@@ -20,7 +20,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         if (position == 0){
             return new MainFragment();
         } else if (position == 1){
-            return new PlayFragment();
+            return new LibraryFragment();
         } else {
             return new AccountFragment();
         }
