@@ -94,6 +94,7 @@ public class JsonObject {
                 break;
             case "/top/playlist":
                 parseTop(response);
+                break;
             case "/playlist/detail":
                 parseDetail(response);
                 break;
@@ -120,7 +121,6 @@ public class JsonObject {
     }
 
     private void parseBanner(String response){
-        Log.d("!!!!!!",response);
         try {
             JSONObject rootObject = new JSONObject(response);
             JSONArray jsonArray = rootObject.getJSONArray("albums");
@@ -140,7 +140,7 @@ public class JsonObject {
             for(int i = 0;i<10;i++){
                 JSONObject object = jsonArray.getJSONObject(i);
                 Recommend recommend = new Recommend();
-                recommend.setId(object.getInt("id"));
+                recommend.setId(object.getString("id"));
                 recommend.setName(object.getString("name"));
                 recommend.setPicUrl(object.getString("coverImgUrl"));
                 recommend.setCreatorName(object.getJSONObject("creator").getString("nickname"));

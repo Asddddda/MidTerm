@@ -56,9 +56,10 @@ public class SongAdaptor extends RecyclerView.Adapter<SongAdaptor.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Song song=mList.get(position);
+        //注释掉的两个有神奇bug
         holder.songName.setText(song.getName());
-        holder.songCount.setText(song.getCount());
-        holder.songTime.setText(song.getLen());
+//        holder.songCount.setText(song.getCount());
+//        holder.songTime.setText(song.getLen());
     }
 
     @Override

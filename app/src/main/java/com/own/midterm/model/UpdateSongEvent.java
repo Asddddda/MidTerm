@@ -9,6 +9,16 @@ import java.util.List;
 public class UpdateSongEvent {
     private List<Song> songList;
 
+    private String imUrl;
+
+    public String getImUrl() {
+        return imUrl;
+    }
+
+    public void setImUrl(String imUrl) {
+        this.imUrl = imUrl;
+    }
+
     public List<Song> getSongList(){
         return songList;
     }

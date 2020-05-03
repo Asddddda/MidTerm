@@ -7,7 +7,7 @@ public class Recommend {
 
     private String picUrl;//封面照片
 
-    private int id;//歌单id
+    private String id;//歌单id
 
     private String creatorName;//作者
 
@@ -35,11 +35,11 @@ public class Recommend {
         this.picUrl = picUrl;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

@@ -1,6 +1,7 @@
 package com.own.midterm.presenter;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,8 +56,12 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
                 Recommend recommend = mList.get(position);
                 JsonObject jsonObject = new JsonObject(view.getContext(),null);
                 jsonObject.request("/playlist/detail","?id="+recommend.getId());
-                Log.d("!!!!!!","!"+"/playlist/detail"+"?id="+recommend.getId());
                 Intent intent = new Intent(view.getContext(), ListActivity.class);
+                Bundle data  = new Bundle();
+                data.putString("imUrl",recommend.getPicUrl());
+                data.putString("songName",recommend.getName());
+                data.putString("creator",recommend.getCreatorName());
+                intent.putExtras(data);
                 view.getContext().startActivity(intent);
             }
         });
