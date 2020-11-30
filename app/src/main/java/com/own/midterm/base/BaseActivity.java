@@ -5,28 +5,22 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-/**
- * 大概写的一个MVP，之前尝试MVP之间持有接口解耦时出了神奇bug，尝试用抽象类实现，后面才发现坑的。。。还得接口
- * @param <P>
- */
-public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppCompatActivity implements View.OnClickListener {
-
-    public P mPresenter;
+public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
         setContentView(getContentViewID());
-
-        mPresenter = getPresenterInstance();
         initView();
         initListener();
     }
-
-
-    public abstract P getPresenterInstance();
 
     public abstract void initView();
 

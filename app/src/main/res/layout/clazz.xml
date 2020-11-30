@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="30dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/floor"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:text="1 楼"
+        android:textSize="17sp"
+        android:textColor="#00BCD4"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:text="2110/2 2110/4"
+        android:textColor="#1B234E"
+        android:textSize="17sp"
+        android:layout_marginStart="100dp" />
+
+
+
+
+</RelativeLayout>

@@ -15,17 +15,15 @@ import com.google.android.material.tabs.TabLayout;
 import com.own.midterm.R;
 import com.own.midterm.base.BaseActivity;
 
-import com.own.midterm.base.BaseActivityPresenter;
-import com.own.midterm.base.BasePresenter;
 import com.own.midterm.presenter.FragmentAdapter;
 
 import static com.own.midterm.util.Other.makeStatusBarTransparent;
 
 public class TableActivity extends BaseActivity {
 
-    private int[] TabRes = new int[]{R.drawable.flame, R.drawable.library,R.drawable.account};
+    private int[] TabRes = new int[]{R.drawable.clazz, R.drawable.lost,R.drawable.ac};
 
-    private int[] selectTabRes = new int[]{R.drawable.flame_sel, R.drawable.library_sel,R.drawable.account_sel};
+    private int[] selectTabRes = new int[]{R.drawable.clazz_b, R.drawable.lost_b,R.drawable.ac_b};
 
     private ViewPager viewPager;
 
@@ -46,11 +44,6 @@ public class TableActivity extends BaseActivity {
     }
 
     @Override
-    public BaseActivityPresenter getPresenterInstance() {
-        return null;
-    }
-
-    @Override
     public void initView() {
         makeStatusBarTransparent(this);
         actionBar = getSupportActionBar();
@@ -61,6 +54,7 @@ public class TableActivity extends BaseActivity {
         for (int i = 0;i<3;i++){
             tabLayout.getTabAt(i).setIcon(TabRes[i]);
         }
+        tabLayout.getTabAt(0).setIcon(selectTabRes[0]);
     }
 
     @Override

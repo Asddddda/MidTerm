@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.own.midterm.view.AccountFragment;
+import com.own.midterm.view.ClazzFragment;
 import com.own.midterm.view.MainFragment;
-import com.own.midterm.view.LibraryFragment;
 
 public class FragmentAdapter extends FragmentPagerAdapter {
     public FragmentAdapter(@NonNull FragmentManager fm) {
@@ -18,9 +18,9 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0){
-            return new MainFragment();
+            return new ClazzFragment();
         } else if (position == 1){
-            return new LibraryFragment();
+            return new MainFragment();
         } else {
             return new AccountFragment();
         }

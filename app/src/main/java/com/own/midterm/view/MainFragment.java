@@ -1,74 +1,112 @@
 package com.own.midterm.view;
 
-import android.accounts.Account;
-import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.own.midterm.R;
 import com.own.midterm.base.BaseFragment;
-import com.own.midterm.contract.MainContract;
-import com.own.midterm.contract.ShowContract;
-import com.own.midterm.model.Recommend;
-import com.own.midterm.model.UpdateRecommendEvent;
-import com.own.midterm.presenter.MainPresenter;
-import com.own.midterm.presenter.RecommendAdapter;
+import com.own.midterm.model.Lost;
+import com.own.midterm.model.UpdateLostEvent;
+import com.own.midterm.presenter.LostAdaptor;
 import com.own.midterm.util.BusUtil.BusUtil;
 import com.own.midterm.util.BusUtil.EventUtil;
 import com.own.midterm.util.BusUtil.ThreadModel;
-import com.own.midterm.util.Glide.MyGlide;
+import com.own.midterm.util.MyJSON.MyJSON;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.own.midterm.util.Other.makeStatusBarTransparent;
 
-public class MainFragment extends BaseFragment<MainPresenter> implements MainContract.V{
+public class MainFragment extends BaseFragment{
 
     private RecyclerView recyclerView;
 
-    private List<Recommend>list = new ArrayList<>();
+    private ImageButton release;
+
+    private EditText searchEdit;
+
+    private List<Lost>list = new ArrayList<>();
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onStart() {
         super.onStart();
-        askP();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter.bindView(this);
-        askP();
+        MyJSON myJSON = new MyJSON(this.getContext());
+        myJSON.request("Sendlostproperty.php","");
         BusUtil.getDefault().register(this);
-    }
 
-    @Override
-    public MainPresenter getPresenterInstance() {
-        return new MainPresenter();
     }
 
     @Override
     public void initView() {
-        makeStatusBarTransparent(getActivity());
-        recyclerView = getView().findViewById(R.id.main_recy);
+        makeStatusBarTransparent(Objects.requireNonNull(getActivity()));
+        recyclerView= Objects.requireNonNull(getView()).findViewById(R.id.main_recy);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+            }
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+        release=getView().findViewById(R.id.release);
+        release.setOnClickListener(this);
+        swipeRefreshLayout=getView().findViewById(R.id.swipe_view);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                MyJSON myJSON = new MyJSON(getContext());
+                myJSON.request("Sendlostproperty.php","");
+                BusUtil.getDefault().register(this);
+            }
+        });
+        searchEdit = getView().findViewById(R.id.search_edit_text);
+        searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    search();
+                }
+                return true;
+            }
+        });
+    }
+    void search(){
+        MyJSON myJSON = new MyJSON(this.getContext());
+        myJSON.request("Findlostproperty.php","?uid="+searchEdit.getText().toString());
+        BusUtil.getDefault().register(this);
     }
 
     @Override
     public void initListener() {
-
     }
-
     @Override
     public int getContentViewID() {
         return R.layout.main_layout;
@@ -76,32 +114,36 @@ public class MainFragment extends BaseFragment<MainPresenter> implements MainCon
 
     @Override
     public void destroy() {
-        this.mPresenter = null;
         BusUtil.getDefault().unregister(this);
-
     }
 
     @Override
-    public void askP() {
-        mPresenter.askM(getActivity());
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()){
+            case R.id.release:
+                Intent intent = new Intent(v.getContext(),ReleaseActivity.class);
+                v.getContext().startActivity(intent);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
-    public void show(final String info) {
-        final Context context = getActivity();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                MyGlide.with(context).load(info).setCompress(10).setRatio(0.6f).into((ImageView) getActivity().findViewById(R.id.new_albums));
-            }
-        });
+    public void onResume() {
+        super.onResume();
+        MyJSON myJSON = new MyJSON(this.getContext());
+        myJSON.request("Sendlostproperty.php", "");
+        BusUtil.getDefault().register(this);
+
     }
 
     @EventUtil(threadModel = ThreadModel.MAIN)
-    public void showRecyclerView(UpdateRecommendEvent event){
-        list = event.getRecommendList();
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recyclerView.setAdapter(new RecommendAdapter(list));
+    public void showRecyclerView(UpdateLostEvent event) {
+        list = event.getLostList();
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        recyclerView.setAdapter(new LostAdaptor(list));
+        swipeRefreshLayout.setRefreshing(false);
     }
-
 }

@@ -1,6 +1,7 @@
 package com.own.midterm.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -12,12 +13,10 @@ import androidx.appcompat.app.ActionBar;
 
 import com.own.midterm.R;
 import com.own.midterm.base.BaseActivity;
-import com.own.midterm.base.BaseActivityPresenter;
-import com.own.midterm.contract.LoginContract;
 
 import static com.own.midterm.util.Other.makeStatusBarTransparent;
 
-public class LoginActivity extends BaseActivity implements LoginContract.V {
+public class LoginActivity extends BaseActivity {
     private EditText userName;
 
     private EditText password;
@@ -31,11 +30,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.V {
         super.onCreate(savedInstanceState);
         if(actionBar!=null)
             actionBar.hide();
-    }
-
-    @Override
-    public BaseActivityPresenter getPresenterInstance() {
-        return null;
     }
 
     @Override
@@ -65,12 +59,19 @@ public class LoginActivity extends BaseActivity implements LoginContract.V {
     public void onClick(View v) {
         String name = userName.getText().toString();
         String pw = password.getText().toString();
-        if(name.equals("abc")&&pw.equals("123")){
-            Intent intent = new Intent(this,TableActivity.class);
-            startActivity(intent);
-            Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(this, "账号或密码错误", Toast.LENGTH_SHORT).show();
-        }
+        SharedPreferences.Editor editor = getSharedPreferences("account",MODE_PRIVATE).edit();
+        editor.putString("uid", name);
+        editor.apply();
+        Intent intent = new Intent(this,TableActivity.class);
+        startActivity(intent);
+        Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
+
+//        if(name.equals("123456")&&pw.equals("123")){
+//            Intent intent = new Intent(this,TableActivity.class);
+//            startActivity(intent);
+//            Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
+//        }else {
+//            Toast.makeText(this, "账号或密码错误", Toast.LENGTH_SHORT).show();
+//        }
     }
 }

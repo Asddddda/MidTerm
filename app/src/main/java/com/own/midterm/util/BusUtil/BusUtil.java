@@ -72,7 +72,8 @@ final public class BusUtil {
     public void post(Object event){
         try {
             List<MethodCall>methodCalls = methodCallMap.get(event.getClass());
-            for (int i=0; i<methodCalls.size(); i++){
+            assert methodCalls != null;
+            for (int i = 0; i<methodCalls.size(); i++){
                 switch (methodCalls.get(i).getThreadModel()){
                     case MAIN:
                         if(isMainThread()) {

@@ -9,15 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements View.OnClickListener {
-    public P mPresenter;
-
+public abstract class BaseFragment extends Fragment implements View.OnClickListener {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getContentViewID(),null);
-        return view;
+        return inflater.inflate(getContentViewID(),null);
     }
 
     @Override
@@ -29,11 +26,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = getPresenterInstance();
         initListener();
     }
 
-    public abstract P getPresenterInstance();
 
     public abstract void initView();
 

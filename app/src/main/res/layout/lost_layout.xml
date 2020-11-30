@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:id="@+id/lost_lay1">
+        <TextView
+            android:id="@+id/lost_name"
+            android:layout_width="wrap_content"
+            android:layout_height="20sp"
+            android:text="匿名用户"
+            android:textColor="#03A9F4"
+            android:textSize="14sp"
+            />
+
+        <TextView
+            android:id="@+id/lost_time"
+            android:layout_width="wrap_content"
+            android:layout_height="20sp"
+            android:text="2020-11-23"
+            android:textColor="#00BCD4"
+            android:layout_marginStart="114dp"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/lost_pic"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@+id/lost_lay1"
+/>
+
+    <TextView
+        android:id="@+id/lost_loc"
+        android:layout_width="match_parent"
+        android:layout_height="25sp"
+        android:text="二教"
+        android:textColor="#152DB1"
+        android:textSize="15sp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/lost_pic"
+        />
+
+    <TextView
+        android:id="@+id/lost_des"
+        android:layout_width="match_parent"
+        android:layout_height="58sp"
+        android:text="在HaoGe的pad上发现的，很好康，针不戳"
+        android:textColor="#3F51B5"
+        android:textSize="15sp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/lost_loc"
+        />
+
+</RelativeLayout>

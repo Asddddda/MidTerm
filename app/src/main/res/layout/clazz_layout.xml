@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_view2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/top_rela0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30sp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="空教室"
+                    android:textColor="#1C252A"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_marginStart="8dp"
+                android:id="@+id/layer30"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/top_rela0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/ej"
+                    android:layout_width="52dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_height="33dp"
+                    android:layout_margin="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 二教"
+                        android:textColor="#1C252A"
+                        android:textSize="17sp"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/sj"
+                    android:layout_width="52dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_height="33dp"
+                    android:layout_margin="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 三教"
+                        android:textColor="#1C252A"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/shj"
+                    android:layout_width="52dp"
+                    android:layout_height="33dp"
+                    android:layout_margin="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 四教"
+                        android:textColor="#1C252A"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wj"
+                    android:layout_width="52dp"
+                    android:layout_height="33dp"
+                    android:layout_margin="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 五教"
+                        android:textColor="#1C252A"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bj"
+                    android:layout_width="52dp"
+                    android:layout_height="33dp"
+                    android:layout_margin="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 八教"
+                        android:textColor="#1C252A"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="20dp"
+                android:id="@+id/clazz_recy"
+                app:layout_constraintTop_toBottomOf="@+id/layer30"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+

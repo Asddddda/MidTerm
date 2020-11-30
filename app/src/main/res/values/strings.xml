@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MidTerm</string>
+    <string name="app_name">ClassRoom</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>

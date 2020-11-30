@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/lost_lay1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="10dp">
+
+        <EditText
+            android:id="@+id/lost_loc_edit"
+            android:layout_width="250dp"
+            android:layout_height="40sp"
+            android:textSize="15sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="6dp"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:textColor="#DA5B51"
+            android:background="@drawable/shape_enter"
+            android:hint="请输入拾取地点"
+            android:textColorHint="@color/colorGrayText"
+            android:maxLines="1"/>
+
+        <ImageButton
+            android:id="@+id/release_bt"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="280dp"
+            android:background="@drawable/fabu2"
+            android:textSize="15sp" />
+
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/lost_des_edit"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginRight="6dp"
+        android:background="@drawable/shape_enter"
+        android:hint="请输入物品描述及联系方式"
+        android:textColorHint="@color/colorGrayText"
+        android:textColor="#DA5B51"
+        android:layout_below="@+id/lost_lay1_edit"
+        />
+
+    <ImageView
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:id="@+id/lost_pic_edit"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@+id/lost_lay1_edit"
+        />
+
+
+</LinearLayout>
