@@ -9,44 +9,46 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.own.midterm.R;
 import com.own.midterm.base.BaseActivity;
+import com.own.midterm.base.CallBack;
+import com.own.midterm.model.Lost;
+import com.own.midterm.model.UpdateMyPostEvent;
+import com.own.midterm.model.UpdateResEvent;
+import com.own.midterm.presenter.DelLostAdaptor;
 import com.own.midterm.util.BusUtil.BusUtil;
+import com.own.midterm.util.BusUtil.EventUtil;
+import com.own.midterm.util.BusUtil.ThreadModel;
 import com.own.midterm.util.GlideRoundTransform;
 import com.own.midterm.util.MyJSON.MyJSON;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import static com.own.midterm.util.Other.makeStatusBarTransparent;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import android.widget.Button;
+import android.widget.TextView;
+import android.widget.ThemedSpinnerAdapter;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -58,120 +60,92 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-public class ReleaseActivity extends BaseActivity {
+public class DemoActivity extends BaseActivity {
     private ImageView imageView;
 
     private String path;
 
     private static final int ALBUM_REQUEST_CODE = 2;
 
-    private ImageButton releaseBt;
-
-    private EditText editText;
-
-    private EditText editText2;
+    private ImageButton demoBt;
 
     private File file;
 
-    private String loc;
+    private String fileName = "";
 
-    private String des;
+    private ImageView imageViewRes;
+    private SharedPreferences.Editor editor;
 
-    private String uid;
+    private TextView textView;
 
-    private String time;
 
-    String fileName = "";
+    @SuppressLint("HandlerLeak")
+    private final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@SuppressLint("HandlerLeak") Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 0) {
+                Toast.makeText(DemoActivity.this, "Running...", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    final Timer timer = new Timer();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final SharedPreferences sp = getSharedPreferences("res",MODE_PRIVATE);
+        editor = getSharedPreferences("res",MODE_PRIVATE).edit();
+        editor.putBoolean("waiting",true);
+        editor.apply();
+        demoBt =findViewById(R.id.demo_bt);
+        imageView = (ImageView)findViewById(R.id.demo_pic);
+        imageViewRes  = findViewById(R.id.res_pic);
+        textView = findViewById(R.id.res_num);
+        BusUtil.getDefault().register(this);
         getPic();
-        SharedPreferences sp = getSharedPreferences("account",MODE_PRIVATE);
-        uid = sp.getString("uid","123456");
-        releaseBt =findViewById(R.id.release_bt);
-        imageView = (ImageView)findViewById(R.id.lost_pic_edit);
-        editText=(EditText)findViewById(R.id.lost_des_edit);
-        editText2=findViewById(R.id.lost_loc_edit);
-        releaseBt.setOnClickListener(new View.OnClickListener() {
+        Log.d("AFTER","");
+        demoBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ReleaseActivity.this,"开始上传...",Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(DemoActivity.this,"开始发送...",Toast.LENGTH_SHORT).show();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         uploadMultiFile();
-                        try {
-                            uploadPost();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                     }
                 }).start();
             }
         });
+        timer.schedule(new TimerTask(){
+                @Override
+                public void run(){
+                    if(sp.getBoolean("waiting",true)) {
+                        Message message = new Message();
+                        message.what = 0;
+                        handler.sendMessage(message);
+                        MyJSON myJSON = new MyJSON(DemoActivity.this, new CallBack() {
+                            @Override
+                            public void onSuccess() { }
+                            @Override
+                            public void onFail() { }
+                        });
+                        myJSON.request("SendDemoPhoto.php","");
+                    }
+
+                }},10000,3000);
     }
 
-    private void uploadPost() throws IOException {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日 HH:mm:ss");// HH:mm:ss
-        Date date = new Date(System.currentTimeMillis());
-        time=simpleDateFormat.format(date);
-        Log.d("TIME",time);
-        loc=editText2.getText().toString();
-        des=editText.getText().toString();
-        String jsonBody = "{\n" +
-                "        \"lpphoto\": \""+fileName+"\",\n" +
-                "        \"address\": \""+loc+"\",\n" +
-                "        \"lpdesc\": \""+des+"\",\n" +
-                "        \"lptime\": \""+time+"\",\n" +
-                "        \"lpfname\": \"匿名\",\n" +
-                "        \"uid\": \""+uid+"\"\n" +
-                "    }";
-        PrintWriter out = null;
-        BufferedReader in = null;
-        String result = "";
-        try {
-            URL url = new URL(MyJSON.SERVER_LOC+"/zixi/Addlostproperty.php");
-            URLConnection conn = url.openConnection();
-            // 设置通用的请求属性
-            conn.setRequestProperty("accept", "*/*");
-            conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("user-agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-            // 发送POST请求必须设置如下两行
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            out = new PrintWriter(conn.getOutputStream());
-            // flush输出流的缓冲
-            out.write(jsonBody);
-            out.flush();
-            // 定义BufferedReader输入流来读取URL的响应
-            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null) {
-                result += line;
-            }
-            Log.d("!!!!!!",result);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        //使用finally块来关闭输出流、输入流
-        finally{
-            try{
-                if(out!=null){
-                    out.close();
-                }
-                if(in!=null){
-                    in.close();
-                }
-            }
-            catch(IOException ex){
-                ex.printStackTrace();
-            }
-        }
-
+    @EventUtil(threadModel = ThreadModel.MAIN)
+    public void showRes(UpdateResEvent event) {
+        RequestOptions options = new RequestOptions()
+                .transform(new GlideRoundTransform(this,20));
+        Glide.with(this).load(event.getLink()).override(700,500)
+                .centerCrop().apply(options).skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE).into(imageViewRes);
+        textView.setText(event.getNum());
     }
 
     private void getPic(){
@@ -230,37 +204,36 @@ public class ReleaseActivity extends BaseActivity {
     }
 
     private void uploadMultiFile() {//将图片发送到服务器
-        final String url = MyJSON.SERVER_LOC +"/zixi/Getphoto.php";
+        final String url = MyJSON.SERVER_LOC +"/zixi/Getphoto1.php";
         RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
         RequestBody requestBody = new MultipartBody.Builder()
-        .setType(MultipartBody.FORM)
-                .addFormDataPart("image1", fileName, fileBody)
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("image1", "test.jpg", fileBody)
                 .build();
         Request request = new Request.Builder().url(url)
                 .post(requestBody)
                 .build();
         final okhttp3.OkHttpClient.Builder httpBuilder = new OkHttpClient.Builder();
         OkHttpClient okHttpClient = httpBuilder
-        //设置超时
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .writeTimeout(15, TimeUnit.SECONDS)
-        .build();
+                //设置超时
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(15, TimeUnit.SECONDS)
+                .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
-         @Override
-         public void onFailure(Call call, IOException e) {
-            Log.e("!!!!!!", "uploadMultiFile() e=" + e);
-            Toast.makeText(ReleaseActivity.this,"发布失败",Toast.LENGTH_SHORT).show();
-         }
-         @Override
-         public void onResponse(Call call, Response response) throws IOException {
-             Log.i("!!!!!!", "uploadMultiFile() response=" + response.body().string());
-             finish();
-         }});
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("!!!!!!", "uploadMultiFile() e=" + e);
+                Toast.makeText(DemoActivity.this,"发布失败",Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.i("!!!!!!", "uploadMultiFile() response=" + response.body().string());
+            }});
     }
 
     @Override
     public void initView() {
-       makeStatusBarTransparent(this);
+        makeStatusBarTransparent(this);
     }
 
     @Override
@@ -270,11 +243,15 @@ public class ReleaseActivity extends BaseActivity {
 
     @Override
     public int getContentViewID() {
-        return R.layout.release_activity;
+        return R.layout.demo_layout;
     }
 
     @Override
     public void destroy() {
+        editor.putBoolean("waiting",true);
+        editor.apply();
+        timer.cancel();
+        BusUtil.getDefault().unregister(this);
     }
     @Override
     public void onClick(View v) {

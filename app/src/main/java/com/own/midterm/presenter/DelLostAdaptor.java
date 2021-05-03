@@ -91,7 +91,7 @@ public class DelLostAdaptor extends RecyclerView.Adapter<DelLostAdaptor.ViewHold
         //设置图片圆角角度
         RequestOptions options = new RequestOptions()
                 .transform(new GlideRoundTransform(holder.rootView.getContext(),20));
-        Glide.with(holder.rootView.getContext()).load("http://192.168.43."+SERVER_LOC+"/zixi/LostImage/"+
+        Glide.with(holder.rootView.getContext()).load(SERVER_LOC+"/zixi/LostImage/"+
                 lost.getPhoto()).override(700,500).centerCrop().apply(options).into(holder.pic);
 //        MyGlide.with(holder.rootView.getContext()).load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586596752631&di=7a50efe18ba49d7d8a6873e98de865ec&imgtype=0&src=http%3A%2F%2Fbbs.jooyoo.net%2Fattachment%2FMon_0905%2F24_65548_2835f8eaa933ff6.jpg")
 //                .setRatio(1f).setCompress(10).into(holder.pic);

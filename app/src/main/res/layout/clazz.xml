@@ -7,9 +7,9 @@
     <TextView
         android:id="@+id/floor"
         android:layout_width="40dp"
-        android:layout_height="25dp"
+        android:layout_height="22dp"
         android:text="1 楼"
-        android:textSize="17sp"
+        android:textSize="18sp"
         android:textColor="#00BCD4"
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp" />
@@ -18,11 +18,12 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="0dp"
         android:text="2110/2 2110/4"
+        android:singleLine="false"
         android:textColor="#1B234E"
         android:textSize="17sp"
-        android:layout_marginStart="100dp" />
+        android:layout_marginStart="75dp" />
 
 
 

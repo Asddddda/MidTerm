@@ -1,5 +1,6 @@
 package com.own.midterm.base;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public abstract class BaseFragment extends Fragment implements View.OnClickListener {
+
+
 
     @Nullable
     @Override
@@ -35,6 +38,10 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     public abstract void initListener();
 
     public abstract int getContentViewID();
+
+//    public Activity setRoot(Activity activity){
+//        return activity;
+//    }
 
     public abstract void destroy();
 
