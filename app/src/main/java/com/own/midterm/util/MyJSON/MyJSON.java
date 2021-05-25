@@ -16,7 +16,6 @@ import com.own.midterm.model.UpdateLostEvent;
 import com.own.midterm.model.UpdateMyPostEvent;
 import com.own.midterm.model.UpdateResEvent;
 import com.own.midterm.util.BusUtil.BusUtil;
-import com.own.midterm.util.JSON.ThreadPool;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
